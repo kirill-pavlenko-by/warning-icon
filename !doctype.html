@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>WARNING — Car Dashboard (Big Smooth)</title>
+<style>
+  :root{
+    --accent:#FF0000;   /* строгий красный */
+    --bg:#000;
+    --size:234px;       /* +50% от 156px */
+    --text:"WARNING";
+  }
+  html,body{height:100%;margin:0;background:var(--bg);color:#fff0f0;
+    font-family:ui-monospace,Consolas,Monaco,monospace}
+
+  .page{min-height:100%;display:grid;place-items:center;padding:20px}
+  .icon-wrap{display:inline-flex;flex-direction:column;align-items:center;gap:16px;user-select:none}
+
+  .icon{width:var(--size);height:var(--size);
+        animation:fadeBlink 0.9s infinite ease-in-out}
+  .label{font-size:calc(var(--size)*0.20);letter-spacing:.1em;text-transform:uppercase;
+         color:var(--accent);line-height:1;white-space:nowrap;
+         animation:fadeBlink 0.9s infinite ease-in-out}
+  .label::before{content:var(--text)}
+
+  /* Мягкое затухание 0.5s → до 10%, затем рост 0.4s → до 100% */
+  @keyframes fadeBlink{
+    0%   { opacity:1 }
+    56%  { opacity:0.1 }
+    100% { opacity:1 }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .icon,.label{animation:none}
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+    <div class="icon-wrap" role="status" aria-live="polite">
+      <svg class="icon" viewBox="0 0 100 100" aria-hidden="true">
+        <polygon points="50,6 96,88 4,88"
+                 fill="none" stroke="var(--accent)" stroke-width="6" stroke-linejoin="round"/>
+        <rect x="47" y="28" width="6" height="34" rx="2" fill="var(--accent)"/>
+        <circle cx="50" cy="72" r="5" fill="var(--accent)"/>
+      </svg>
+      <div class="label"></div>
+    </div>
+  </main>
+</body>
+</html>
