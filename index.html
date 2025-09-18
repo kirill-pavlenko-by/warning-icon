@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Live Icon — CRITICAL ERROR</title>
+<style>
+  :root{
+    --accent: #ff3b00;          /* оранжево-алый аварийный */
+    --bg: #000;                 /* фон */
+    --size: 120px;              /* базовый размер иконки */
+    --text: "CRITICAL ERROR";   /* подпись */
+    --glow: 0 0 12px #ff3b00, 0 0 32px #ff3b00;
+  }
+  html,body{height:100%;margin:0;background:var(--bg);color:#ffd9cc;font-family:ui-monospace,Consolas,Monaco,monospace}
+
+  /* Контейнер значка */
+  .icon-wrap{
+    display:inline-flex; flex-direction:column; align-items:center; gap:10px;
+    padding:16px; user-select:none;
+  }
+
+  /* Сам значок — SVG треугольник с восклицательным знаком */
+  .icon{
+    width:var(--size); height:var(--size);
+    position:relative; filter:drop-shadow(var(--glow));
+    animation:pulse 1.2s ease-in-out infinite, nudge 6s ease-in-out infinite;
+  }
+  /* Лёгкий шум/сканлайн поверх для «живости» */
+  .icon::after{
+    content:""; position:absolute; inset:-4%;
+    background:repeating-linear-gradient(
+      0deg, rgba(255,59,0,.07) 0 1px, transparent 1px 3px);
+    mix-blend-mode:screen; pointer-events:none;
+    animation:scan 2.4s linear infinite;
+  }
+
+  /* Подпись под значком */
+  .label{
+    font-size:calc(var(--size) * 0.18);
+    letter-spacing:.08em; text-transform:uppercase;
+    color:var(--accent); text-shadow:var(--glow);
+    animation:flicker 3.8s infinite steps(60,end);
+    line-height:1; white-space:nowrap;
+  }
+  .label::before{ content:var(--text); }
+
+  /* Состояния */
+  .icon-wrap:hover .icon{ animation-duration:0.9s; }
+  .icon-wrap:active .icon{ transform:scale(.98); }
+
+  /* Размеры-предустановки */
+  .s  { --size:72px;  }
+  .m  { --size:120px; }
+  .l  { --size:180px; }
+
+  /* Motion-safe */
+  @media (prefers-reduced-motion: reduce){
+    .icon, .icon::after, .label{ animation:none }
+  }
+
+  /* Анимации */
+  @keyframes pulse{
+    0%,100%{ filter:drop-shadow(0 0 6px #ff3b00) drop-shadow(0 0 18px #ff3b00) }
+    50%    { filter:drop-shadow(0 0 14px #ff3b00) drop-shadow(0 0 40px #ff3b00) }
+  }
+  @keyframes scan{ 0%{transform:translateY(-2%)} 100%{transform:translateY(2%)} }
+  @keyframes nudge{
+    0%,93%,100%{ transform:none }
+    95%{ transform:translateX(-1px) }
+    96%{ transform:translateX(1px) }
+    97%{ transform:translateX(-1px) }
+    98%{ transform:translateX(1px) }
+  }
+  /* Небольшой «глитч» подписи */
+  @keyframes flicker{
+    0%,7%,14%,100%{ opacity:1 }
+    6%,13%{ opacity:.72 }
+    2%,9%{ opacity:.5 }
+  }
+  /* Служебное: центр демо на странице */
+  .page{min-height:100%; display:grid; place-items:center; padding:20px}
+  .row{display:flex; gap:28px; flex-wrap:wrap; justify-content:center}
+  .card{border:1px solid #1a1a1a; padding:14px 18px; border-radius:10px; background:#070707}
+  .alt{ --accent:#ff6a00 } /* вариант цвета */
+</style>
+</head>
+<body>
+  <main class="page">
+    <div class="row">
+      <!-- БАЗОВАЯ ИКОНКА -->
+      <div class="icon-wrap m card" role="status" aria-live="polite">
+        <svg class="icon" viewBox="0 0 100 100" aria-hidden="true">
+          <!-- контур треугольника -->
+          <polygon points="50,6 96,88 4,88" fill="none" stroke="var(--accent)" stroke-width="6"
+                   stroke-linejoin="round"/>
+          <!-- знак "!" -->
+          <rect x="47" y="28" width="6" height="34" rx="2" fill="var(--accent)"/>
+          <circle cx="50" cy="72" r="5" fill="var(--accent)"/>
+        </svg>
+        <div class="label"></div>
+      </div>
+
+      <!-- МАЛЕНЬКАЯ БЕЗ ПОДПИСИ -->
+      <div class="icon-wrap s card" style="--text:''" title="Critical error">
+        <svg class="icon" viewBox="0 0 100 100" aria-hidden="true">
+          <polygon points="50,6 96,88 4,88" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linejoin="round"/>
+          <rect x="47" y="28" width="6" height="34" rx="2" fill="var(--accent)"/>
+          <circle cx="50" cy="72" r="5" fill="var(--accent)"/>
+        </svg>
+      </div>
+
+      <!-- ВАРИАНТ ЦВЕТА/ТЕКСТА/РАЗМЕРА -->
+      <div class="icon-wrap l alt card" style="--text:'SYSTEM FAILURE'">
+        <svg class="icon" viewBox="0 0 100 100" aria-hidden="true">
+          <polygon points="50,6 96,88 4,88" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linejoin="round"/>
+          <rect x="47" y="28" width="6" height="34" rx="2" fill="var(--accent)"/>
+          <circle cx="50" cy="72" r="5" fill="var(--accent)"/>
+        </svg>
+        <div class="label"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Короткая вспышка при клике (для «живости», без звука)
+    document.addEventListener('click', (e)=>{
+      const icon = e.target.closest('.icon');
+      if(!icon) return;
+      icon.animate(
+        [{filter:'drop-shadow(0 0 2px #fff) drop-shadow(0 0 8px #fff)'},
+         {filter:getComputedStyle(icon).filter}],
+        {duration:120, easing:'ease-out'}
+      );
+    });
+  </script>
+</body>
+</html>
