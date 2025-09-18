@@ -2,15 +2,15 @@ MIT License © 2025 **KIRYL PAULENKA**
 
 ---
 
-# 🟡 WARNING Icon (Live HTML/CSS Demo)
+# WARNING Icon (Live HTML/CSS Demo)
 
 Animated **WARNING** icon built with pure HTML/CSS/JS.
 Ideal for dashboards, UI prototypes and education. No libraries.
 
-## 🚀 Demo
-👉 https://https://github.com/kirill-pavlenko-by/warning-icon
+## Demo
+https://https://github.com/kirill-pavlenko-by/warning-icon
 
-## 🎨 Features
+## Features
 - SVG + CSS animations (pulse, subtle tremor, scanlines)
 - CSS variables for color/size/text
 - DARK/RETRO theme toggle (phosphor green)
